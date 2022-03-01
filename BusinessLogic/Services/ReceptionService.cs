@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using BusinessLogic.Base;
-using Data.Models;
+using Data.Models.Hospital;
 using DataAccessLayer;
 using Microsoft.EntityFrameworkCore;
 

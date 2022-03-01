@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Data.Models
+namespace Data.Domain.Hospital
 {
-    public class ReceptionViewModel
+    public class Reception
     {
         public int Id { get; set; }
         public DateTime DateTime { get; set; }

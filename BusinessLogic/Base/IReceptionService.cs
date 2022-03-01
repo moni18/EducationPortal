@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Data.Models;
+using Data.Models.Hospital;
 
 namespace BusinessLogic.Base
 {
