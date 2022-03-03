@@ -1,5 +1,5 @@
 ﻿using BusinessLogic.Base;
-using BusinessLogic.Services;
+using BusinessLogic.Services.Hospital;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace BusinessLogic.Extensions

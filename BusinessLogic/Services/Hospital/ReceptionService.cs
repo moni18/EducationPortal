@@ -3,10 +3,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using BusinessLogic.Base;
 using Data.Models.Hospital;
-using DataAccessLayer;
+using DataAccessLayer.Contexts;
 using Microsoft.EntityFrameworkCore;
 
-namespace BusinessLogic.Services
+namespace BusinessLogic.Services.Hospital
 {
     public class ReceptionService : IReceptionService
     {
@@ -22,8 +22,9 @@ namespace BusinessLogic.Services
             return await _dbContext.Receptions.Select(x => new ReceptionViewModel
             {
                 Id = x.Id,
-                CabinetNumber = x.CabinetNumber,
-                DateTime = x.DateTime
+                CabinetNumber = x.Doctor.CabinetNumber,
+                DateTime = x.DateTime,
+                DoctorName = $"{x.Doctor.LastName} {x.Doctor.FirstName}"
             }).ToListAsync();
         }
     }
