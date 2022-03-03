@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace DataAccessLayer.Migrations
+namespace DataAccessLayer.Migrations.HospitalMigrations
 {
     public partial class Initial : Migration
     {

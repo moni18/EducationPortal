@@ -1,7 +1,10 @@
 using BusinessLogic.Extensions;
+using Data.Seed;
+using DataAccessLayer.Contexts;
 using DataAccessLayer.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -23,7 +26,7 @@ namespace WebDevelopment
             services.AddControllersWithViews();
 
             services
-                .AddHospitalDatabase(Configuration)
+                .AddDatabase(Configuration)
                 .RegisterServices();
         }
 
@@ -50,6 +53,13 @@ namespace WebDevelopment
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            string connection = Configuration.GetConnectionString("DefaultConnection");
+            var contextOptions = new DbContextOptionsBuilder<HospitalContext>()
+                .UseSqlServer(connection).Options;
+            using var context = new HospitalContext(contextOptions);
+
+            DataSeeder.Seed(context);
         }
     }
 }

@@ -7,5 +7,6 @@ namespace Data.Models.Hospital
         public int Id { get; set; }
         public DateTime DateTime { get; set; }
         public int CabinetNumber { get; set; }
+        public string DoctorName { get; set; }
     }
 }
