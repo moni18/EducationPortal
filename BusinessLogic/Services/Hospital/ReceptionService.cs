@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using BusinessLogic.Base;
 using Data.Domain.Hospital;
 using Data.Models.Hospital;
@@ -9,25 +9,22 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BusinessLogic.Services.Hospital
 {
-    public class ReceptionService : IReceptionService
+    public class ReceptionService : BaseService, IReceptionService
     {
         private readonly HospitalContext _dbContext;
 
-        public ReceptionService(HospitalContext dbContext)
+        public ReceptionService(HospitalContext dbContext, IMapper mapper) : base(mapper)
         {
             _dbContext = dbContext;
         }
 
         public async Task<IEnumerable<ReceptionViewModel>> FetchAsync()
         {
-            return await _dbContext.Receptions.Select(x => new ReceptionViewModel
-            {
-                Id = x.Id,
-                CabinetNumber = x.Doctor.CabinetNumber,
-                DateTime = x.DateTime,
-                DoctorName = $"{x.Doctor.LastName} {x.Doctor.FirstName}",
-                PatientName = $"{x.Patient.LastName} {x.Patient.FirstName}"
-            }).ToListAsync();
+            var items = await _dbContext.Receptions
+                .Include(x => x.Patient)
+                .Include(x => x.Doctor).ToListAsync();
+
+            return Mapper.Map<IEnumerable<ReceptionViewModel>>(items);
         }
 
         public async Task<ReceptionViewModel> FetchAsync(int id)
@@ -38,14 +35,7 @@ namespace BusinessLogic.Services.Hospital
             
             //TODO check for null
 
-            return new ReceptionViewModel
-            {
-                Id = reception.Id,
-                CabinetNumber = reception.Doctor.CabinetNumber,
-                DateTime = reception.DateTime,
-                DoctorName = $"{reception.Doctor.LastName} {reception.Doctor.FirstName}",
-                PatientName = $"{reception.Patient.LastName} {reception.Patient.FirstName}"
-            };
+            return Mapper.Map<ReceptionViewModel>(reception);
         }
 
         public async Task DeleteAsync(int id)
@@ -74,12 +64,7 @@ namespace BusinessLogic.Services.Hospital
 
         public async Task CreateAsync(ReceptionViewModel reception)
         {
-            await _dbContext.Receptions.AddAsync(new Reception
-            {
-                DateTime = reception.DateTime,
-                DoctorId = reception.DoctorId,
-                PatientId = reception.PatientId
-            });
+            await _dbContext.Receptions.AddAsync(Mapper.Map<Reception>(reception));
 
             await _dbContext.SaveChangesAsync();
         }

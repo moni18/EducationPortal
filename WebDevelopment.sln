@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusinessLogic", "BusinessLo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data", "Data\Data.csproj", "{15C4BC93-16C0-458E-BFE7-775ED42954FE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.Seed", "Data.Seed\Data.Seed.csproj", "{DBFBBD38-12FF-4ED2-86B6-3625F5807568}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data.Seed", "Data.Seed\Data.Seed.csproj", "{DBFBBD38-12FF-4ED2-86B6-3625F5807568}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{6D54EC0D-7F6C-4D43-ACC2-A95FF0407511}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{DBFBBD38-12FF-4ED2-86B6-3625F5807568}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DBFBBD38-12FF-4ED2-86B6-3625F5807568}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DBFBBD38-12FF-4ED2-86B6-3625F5807568}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D54EC0D-7F6C-4D43-ACC2-A95FF0407511}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D54EC0D-7F6C-4D43-ACC2-A95FF0407511}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D54EC0D-7F6C-4D43-ACC2-A95FF0407511}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D54EC0D-7F6C-4D43-ACC2-A95FF0407511}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

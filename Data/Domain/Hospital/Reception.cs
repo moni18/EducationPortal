@@ -1,10 +1,10 @@
 ﻿using System;
+using Data.Domain.Hospital.Base;
 
 namespace Data.Domain.Hospital
 {
-    public class Reception
+    public class Reception : IdKeyEntityBase<int>
     {
-        public int Id { get; set; }
         public DateTime DateTime { get; set; }
         public int DoctorId { get; set; }
         public int PatientId { get; set; }
