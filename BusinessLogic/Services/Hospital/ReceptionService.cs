@@ -11,9 +11,9 @@ namespace BusinessLogic.Services.Hospital
 {
     public class ReceptionService : BaseService, IReceptionService
     {
-        private readonly HospitalContext _dbContext;
+        private readonly HospitalDbContext _dbContext;
 
-        public ReceptionService(HospitalContext dbContext, IMapper mapper) : base(mapper)
+        public ReceptionService(HospitalDbContext dbContext, IMapper mapper) : base(mapper)
         {
             _dbContext = dbContext;
         }

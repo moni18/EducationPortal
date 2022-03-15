@@ -1,10 +1,12 @@
 ﻿using System.Threading.Tasks;
 using BusinessLogic.Base;
 using Data.Models.Hospital;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebDevelopment.Controllers
 {
+    [Authorize]
     public class ReceptionController : Controller
     {
         private readonly IReceptionService _receptionService;

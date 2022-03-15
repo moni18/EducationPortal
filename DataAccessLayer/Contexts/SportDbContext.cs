@@ -10,11 +10,11 @@ namespace DataAccessLayer.Contexts
         public string Country { get; set; }
     }
 
-    public class SportContext : DbContext
+    public class SportDbContext : DbContext
     {
         public DbSet<Event> Events { get; set; }
 
-        public SportContext(DbContextOptions<SportContext> options) : base(options)
+        public SportDbContext(DbContextOptions<SportDbContext> options) : base(options)
         {
         }
     }

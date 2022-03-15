@@ -1,9 +1,11 @@
+using System.Linq;
 using BusinessLogic.Extensions;
 using Data.Seed;
 using DataAccessLayer.Contexts;
 using DataAccessLayer.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -28,6 +30,9 @@ namespace WebDevelopment
             services
                 .AddDatabase(Configuration)
                 .RegisterServices();
+
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<HospitalDbContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -45,6 +50,7 @@ namespace WebDevelopment
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
@@ -55,9 +61,15 @@ namespace WebDevelopment
             });
 
             string connection = Configuration.GetConnectionString("DefaultConnection");
-            var contextOptions = new DbContextOptionsBuilder<HospitalContext>()
+            var contextOptions = new DbContextOptionsBuilder<HospitalDbContext>()
                 .UseSqlServer(connection).Options;
-            using var context = new HospitalContext(contextOptions);
+            using var context = new HospitalDbContext(contextOptions);
+
+            var pendingMigrations = context.Database.GetPendingMigrations();
+            if (pendingMigrations.Any())
+            {
+                context.Database.Migrate();
+            }
 
             DataSeeder.Seed(context);
         }

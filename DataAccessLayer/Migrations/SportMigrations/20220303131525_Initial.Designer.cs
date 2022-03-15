@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DataAccessLayer.Migrations.SportMigrations
 {
-    [DbContext(typeof(SportContext))]
+    [DbContext(typeof(SportDbContext))]
     [Migration("20220303131525_Initial")]
     partial class Initial
     {

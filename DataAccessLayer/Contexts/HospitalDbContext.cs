@@ -1,17 +1,18 @@
 ﻿using System.Reflection;
 using Data.Domain.Hospital;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccessLayer.Contexts
 {
-    public class HospitalContext : DbContext
+    public class HospitalDbContext : IdentityDbContext
     {
         public DbSet<Reception> Receptions { get; set; }
         public DbSet<Doctor> Doctors { get; set; }
         public DbSet<Patient> Patients { get; set; }
         public DbSet<Hospital> Hospitals { get; set; }
 
-        public HospitalContext(DbContextOptions<HospitalContext> options) : base(options)
+        public HospitalDbContext(DbContextOptions<HospitalDbContext> options) : base(options)
         {
         }
 

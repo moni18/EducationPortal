@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DataAccessLayer.Migrations.HospitalMigrations
 {
-    [DbContext(typeof(HospitalContext))]
+    [DbContext(typeof(HospitalDbContext))]
     [Migration("20220301140719_Initial")]
     partial class Initial
     {

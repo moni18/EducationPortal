@@ -10,7 +10,7 @@ namespace DataAccessLayer.Extensions
         public static IServiceCollection AddDatabase(this IServiceCollection services, IConfiguration configuration)
         {
             string connection = configuration.GetConnectionString("DefaultConnection");
-            services.AddDbContext<HospitalContext>(ctx =>
+            services.AddDbContext<HospitalDbContext>(ctx =>
             {
                 ctx.UseSqlServer(connection, providerOptions => providerOptions.EnableRetryOnFailure());
             });

@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DataAccessLayer.Migrations.HospitalMigrations
 {
-    [DbContext(typeof(HospitalContext))]
+    [DbContext(typeof(HospitalDbContext))]
     [Migration("20220303145725_PatientsAdded")]
     partial class PatientsAdded
     {

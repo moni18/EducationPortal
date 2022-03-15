@@ -10,9 +10,9 @@ namespace BusinessLogic.Services.Hospital
 {
     public class PatientService : BaseService, IPatientService
     {
-        private readonly HospitalContext _dbContext;
+        private readonly HospitalDbContext _dbContext;
 
-        public PatientService(HospitalContext dbContext, IMapper mapper) : base(mapper)
+        public PatientService(HospitalDbContext dbContext, IMapper mapper) : base(mapper)
         {
             _dbContext = dbContext;
         }

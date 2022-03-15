@@ -7,7 +7,7 @@ namespace Data.Seed
 {
     public static class DataSeeder
     {
-        public static void Seed(HospitalContext context)
+        public static void Seed(HospitalDbContext context)
         {
             using var tran = context.Database.BeginTransaction();
             
