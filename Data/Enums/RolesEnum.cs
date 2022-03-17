@@ -1,22 +1,18 @@
-﻿using System;
+﻿using Common.Attributes;
 
 namespace Data.Enums
 {
-    [AttributeUsage(AttributeTargets.Field)]
-    public class EnumAttribute : Attribute
-    {
-        public bool IsRegister { get; set; }
-    }
-
     public enum RolesEnum
     {
-        [Enum(IsRegister = true)]
+        [EnumInfo(IsRegister = true)]
         Doctor,
-        [Enum(IsRegister = true)]
+        [EnumInfo(IsRegister = true)]
         Patient,
-        [Enum(IsRegister = true)]
+        [EnumInfo(IsRegister = false)]
         Registrator,
+        [EnumInfo(IsRegister = false)]
         Admin,
+        [EnumInfo(IsRegister = false)]
         Reader
     }
 }

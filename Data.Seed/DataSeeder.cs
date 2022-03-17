@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Linq;
+using Common.Attributes;
+using Common.Extensions;
 using Data.Domain.Hospital;
 using Data.Enums;
 using DataAccessLayer.Contexts;
@@ -15,22 +17,15 @@ namespace Data.Seed
 
             if (!context.Roles.Any())
             {
-                string[] roleNames = Enum.GetNames(typeof(RolesEnum));
-
-                /*var enumType = typeof(RolesEnum);
-                var memberInfos =
-                    enumType.GetMember(RolesEnum.NameWithoutSpaces1.ToString());
-                var enumValueMemberInfo = memberInfos.FirstOrDefault(m =>
-                    m.DeclaringType == enumType);
-                var valueAttributes =
-                    enumValueMemberInfo.GetCustomAttributes(typeof(EnumAttribute), false);
-                var description = ((EnumAttribute)valueAttributes[0]).Description;*/
-
-                context.Roles.AddRange(roleNames.Select(x => new HospitalRole
+                foreach (RolesEnum role in (RolesEnum[])Enum.GetValues(typeof(RolesEnum)))
                 {
-                    Name = x, 
-                    NormalizedName = x.ToUpper()
-                }));
+                    context.Roles.Add(new HospitalRole
+                    {
+                        Name = role.ToString(),
+                        NormalizedName = role.ToString().ToUpper(),
+                        IsRegister = role.GetAttribute<EnumInfoAttribute>().IsRegister
+                    });
+                }
 
                 context.SaveChanges();
             }
