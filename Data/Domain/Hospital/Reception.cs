@@ -1,5 +1,6 @@
 ﻿using System;
 using Data.Domain.Hospital.Base;
+using Microsoft.AspNetCore.Identity;
 
 namespace Data.Domain.Hospital
 {
@@ -7,9 +8,9 @@ namespace Data.Domain.Hospital
     {
         public DateTime DateTime { get; set; }
         public int DoctorId { get; set; }
-        public int PatientId { get; set; }
+        public string PatientId { get; set; }
 
         public Doctor Doctor { get; set; }
-        public Patient Patient { get; set; }
+        public IdentityUser Patient { get; set; }
     }
 }

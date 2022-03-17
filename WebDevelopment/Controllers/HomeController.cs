@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
 using Data.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebDevelopment.Controllers
 {
@@ -13,7 +14,8 @@ namespace WebDevelopment.Controllers
         {
             _logger = logger;
         }
-
+        
+        [Authorize]
         public IActionResult Index()
         {
             return View();

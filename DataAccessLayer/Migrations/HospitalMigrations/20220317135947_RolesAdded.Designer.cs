@@ -4,14 +4,16 @@ using DataAccessLayer.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace DataAccessLayer.Contexts.Migrations
+namespace DataAccessLayer.Migrations.HospitalMigrations
 {
     [DbContext(typeof(HospitalDbContext))]
-    partial class HospitalContextModelSnapshot : ModelSnapshot
+    [Migration("20220317135947_RolesAdded")]
+    partial class RolesAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -76,6 +78,41 @@ namespace DataAccessLayer.Contexts.Migrations
                     b.ToTable("Hospitals");
                 });
 
+            modelBuilder.Entity("Data.Domain.Hospital.Patient", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Complaint")
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
+
+                    b.Property<string>("Diagnosis")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Patients");
+                });
+
             modelBuilder.Entity("Data.Domain.Hospital.Reception", b =>
                 {
                     b.Property<int>("Id")
@@ -89,9 +126,8 @@ namespace DataAccessLayer.Contexts.Migrations
                     b.Property<int>("DoctorId")
                         .HasColumnType("int");
 
-                    b.Property<string>("PatientId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("PatientId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -320,8 +356,8 @@ namespace DataAccessLayer.Contexts.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "Patient")
-                        .WithMany()
+                    b.HasOne("Data.Domain.Hospital.Patient", "Patient")
+                        .WithMany("Receptions")
                         .HasForeignKey("PatientId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -390,6 +426,11 @@ namespace DataAccessLayer.Contexts.Migrations
             modelBuilder.Entity("Data.Domain.Hospital.Hospital", b =>
                 {
                     b.Navigation("Doctors");
+                });
+
+            modelBuilder.Entity("Data.Domain.Hospital.Patient", b =>
+                {
+                    b.Navigation("Receptions");
                 });
 #pragma warning restore 612, 618
         }

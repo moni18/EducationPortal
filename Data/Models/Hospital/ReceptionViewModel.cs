@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using AutoMapper;
 using Common.Mappings;
@@ -16,12 +17,11 @@ namespace Data.Models.Hospital
         public int CabinetNumber { get; set; }
 
         [Required(ErrorMessage = "Select doctor")]
+        [DisplayName("Doctor")]
         public int DoctorId { get; set; }
         public IEnumerable<DoctorViewModel> DoctorsList { get; set; }
 
-        [Required(ErrorMessage = "Select patient")]
-        public int PatientId { get; set; }
-        public IEnumerable<PatientViewModel> PatientsList { get; set; }
+        public string PatientId { get; set; }
 
         public string DoctorName { get; set; }
         public string PatientName { get; set; }
@@ -30,7 +30,7 @@ namespace Data.Models.Hospital
         {
             profile.CreateMap<Reception, ReceptionViewModel>()
                 .ForMember(x => x.DoctorName, opts => opts.MapFrom(y => $"{y.Doctor.LastName} {y.Doctor.FirstName}"))
-                .ForMember(x => x.PatientName, opts => opts.MapFrom(y => $"{y.Patient.LastName} {y.Patient.FirstName}"))
+                .ForMember(x => x.PatientName, opts => opts.MapFrom(y => $"{y.Patient.Email}"))
                 .ForMember(x => x.CabinetNumber, opts => opts.MapFrom(y => y.Doctor.CabinetNumber));
         }
     }

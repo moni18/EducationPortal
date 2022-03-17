@@ -1,5 +1,6 @@
 using System.Linq;
 using BusinessLogic.Extensions;
+using Data.Domain.Hospital;
 using Data.Seed;
 using DataAccessLayer.Contexts;
 using DataAccessLayer.Extensions;
@@ -31,7 +32,7 @@ namespace WebDevelopment
                 .AddDatabase(Configuration)
                 .RegisterServices();
 
-            services.AddIdentity<IdentityUser, IdentityRole>()
+            services.AddIdentity<IdentityUser, HospitalRole>()
                 .AddEntityFrameworkStores<HospitalDbContext>();
         }
 
@@ -57,7 +58,7 @@ namespace WebDevelopment
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Home}/{action=Privacy}/{id?}");
             });
 
             string connection = Configuration.GetConnectionString("DefaultConnection");

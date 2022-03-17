@@ -4,14 +4,16 @@ using DataAccessLayer.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace DataAccessLayer.Contexts.Migrations
+namespace DataAccessLayer.Migrations.HospitalMigrations
 {
     [DbContext(typeof(HospitalDbContext))]
-    partial class HospitalContextModelSnapshot : ModelSnapshot
+    [Migration("20220317153948_UsersToReceptions")]
+    partial class UsersToReceptions
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

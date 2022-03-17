@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Linq;
+using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using Data.Domain;
+using Data.Domain.Hospital;
 using Data.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -10,16 +13,21 @@ namespace WebDevelopment.Controllers
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly RoleManager<HospitalRole> _roleManager;
 
-        public AccountController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+        public AccountController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, RoleManager<HospitalRole> roleManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _roleManager = roleManager;
         }
 
         public IActionResult Register()
         {
-            return View();
+            return View(new RegisterViewModel
+            {
+                Roles = _roleManager.Roles.Where(x => x.IsRegister)
+            });
         }
 
         [HttpPost]
@@ -30,7 +38,7 @@ namespace WebDevelopment.Controllers
                 var user = new IdentityUser
                 {
                     UserName = model.Email,
-                    Email = model.Email,
+                    Email = model.Email
                 };
 
                 var result = await _userManager.CreateAsync(user, model.Password);
@@ -38,6 +46,8 @@ namespace WebDevelopment.Controllers
                 if (result.Succeeded)
                 {
                     await _signInManager.SignInAsync(user, isPersistent: false);
+
+                    await _userManager.AddToRoleAsync(user, model.RoleName);
 
                     return RedirectToAction("index", "Home");
                 }

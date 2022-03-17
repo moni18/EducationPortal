@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Security.Claims;
+using System.Threading.Tasks;
 using BusinessLogic.Base;
 using Data.Models.Hospital;
 using Microsoft.AspNetCore.Authorization;
@@ -11,13 +12,11 @@ namespace WebDevelopment.Controllers
     {
         private readonly IReceptionService _receptionService;
         private readonly IDoctorService _doctorService;
-        private readonly IPatientService _patientService;
 
-        public ReceptionController(IReceptionService receptionService, IDoctorService doctorService, IPatientService patientService)
+        public ReceptionController(IReceptionService receptionService, IDoctorService doctorService)
         {
             _receptionService = receptionService;
             _doctorService = doctorService;
-            _patientService = patientService;
         }
 
         public async Task<IActionResult> Index()
@@ -27,19 +26,23 @@ namespace WebDevelopment.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Patient")]
         public async Task<IActionResult> Create()
         {
             return View("Create", new ReceptionViewModel
             {
-                DoctorsList = await _doctorService.FetchAsync(),
-                PatientsList = await _patientService.FetchAsync()
+                DoctorsList = await _doctorService.FetchAsync()
             });
         }
 
         [HttpPost]
+        [Authorize(Roles = "Patient")]
         public async Task<IActionResult> Create(ReceptionViewModel reception)
         {
+            reception.PatientId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
             await _receptionService.CreateAsync(reception);
+
             return Redirect("Index");
         }
 
@@ -51,6 +54,7 @@ namespace WebDevelopment.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Patient")]
         public async Task<IActionResult> Delete(int id)
         {
             await _receptionService.DeleteAsync(id);
@@ -58,6 +62,7 @@ namespace WebDevelopment.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Patient")]
         public async Task<IActionResult> Edit(int id)
         {
             var item = await _receptionService.FetchAsync(id);
@@ -65,6 +70,7 @@ namespace WebDevelopment.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Patient")]
         public async Task<IActionResult> Edit(ReceptionViewModel reception)
         {
             await _receptionService.UpdateAsync(reception);

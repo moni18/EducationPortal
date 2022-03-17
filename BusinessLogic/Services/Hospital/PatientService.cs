@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using BusinessLogic.Base;
@@ -19,7 +20,8 @@ namespace BusinessLogic.Services.Hospital
 
         public async Task<IEnumerable<PatientViewModel>> FetchAsync()
         {
-            return Mapper.Map<IEnumerable<PatientViewModel>>(await _dbContext.Patients.ToListAsync());
+            return new List<PatientViewModel>();
+            //return Mapper.Map<IEnumerable<PatientViewModel>>(await _dbContext.Users.Where(x=>x).ToListAsync()); TODO
         }
     }
 }
