@@ -55,11 +55,11 @@ namespace WebDevelopment
             });
 
             string connection = Configuration.GetConnectionString("DefaultConnection");
-            var contextOptions = new DbContextOptionsBuilder<HospitalContext>()
+            var contextOptions = new DbContextOptionsBuilder<EducationDbContext>()
                 .UseSqlServer(connection).Options;
-            using var context = new HospitalContext(contextOptions);
+            using var context = new EducationDbContext(contextOptions);
 
-            //DataSeeder.Seed(context);
+            DataSeeder.Seed(context);
         }
     }
 }

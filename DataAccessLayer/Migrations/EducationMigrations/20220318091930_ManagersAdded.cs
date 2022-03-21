@@ -1,45 +1,43 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace DataAccessLayer.Contexts.Migrations
+namespace DataAccessLayer.Migrations.EducationMigrations
 {
-    public partial class DoctorsAdded : Migration
+    public partial class ManagersAdded : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<int>(
-                name: "DoctorId",
-                table: "Receptions",
+                name: "ManagerId",
+                table: "Schools",
                 type: "int",
                 nullable: false,
                 defaultValue: 0);
 
             migrationBuilder.CreateTable(
-                name: "Doctor",
+                name: "Manager",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    HospitalId = table.Column<int>(type: "int", nullable: false),
-                    CabinetNumber = table.Column<int>(type: "int", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Doctor", x => x.Id);
+                    table.PrimaryKey("PK_Manager", x => x.Id);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Receptions_DoctorId",
-                table: "Receptions",
-                column: "DoctorId");
+                name: "IX_Schools_ManagerId",
+                table: "Schools",
+                column: "ManagerId");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Receptions_Doctor_DoctorId",
-                table: "Receptions",
-                column: "DoctorId",
-                principalTable: "Doctor",
+                name: "FK_Schools_Manager_ManagerId",
+                table: "Schools",
+                column: "ManagerId",
+                principalTable: "Manager",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
         }
@@ -47,19 +45,19 @@ namespace DataAccessLayer.Contexts.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Receptions_Doctor_DoctorId",
-                table: "Receptions");
+                name: "FK_Schools_Manager_ManagerId",
+                table: "Schools");
 
             migrationBuilder.DropTable(
-                name: "Doctor");
+                name: "Manager");
 
             migrationBuilder.DropIndex(
-                name: "IX_Receptions_DoctorId",
-                table: "Receptions");
+                name: "IX_Schools_ManagerId",
+                table: "Schools");
 
             migrationBuilder.DropColumn(
-                name: "DoctorId",
-                table: "Receptions");
+                name: "ManagerId",
+                table: "Schools");
         }
     }
 }

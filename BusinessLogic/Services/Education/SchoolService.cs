@@ -22,7 +22,8 @@ namespace BusinessLogic.Services.Education
             {
                 Id = x.Id,
                 Name = x.Name,
-                Address = x.Address
+                Address = x.Address,
+                ManagerName = $"{x.Manager.FirstName} {x.Manager.LastName}"
             }).ToListAsync();
         }
     }

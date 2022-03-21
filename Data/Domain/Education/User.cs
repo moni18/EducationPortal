@@ -1,4 +1,6 @@
-﻿namespace Data.Domain.Hospital
+﻿
+
+namespace Data.Domain.Education
 {
     public class User
     {

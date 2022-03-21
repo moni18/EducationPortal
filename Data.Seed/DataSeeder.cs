@@ -1,106 +1,170 @@
 ﻿using System;
 using System.Linq;
-using Data.Domain.Hospital;
+using Data.Domain.Education;
 using DataAccessLayer.Contexts;
 
 namespace Data.Seed
 {
     public static class DataSeeder
     {
-        public static void Seed(HospitalContext context)
+        public static void Seed(EducationDbContext context)
         {
             using var tran = context.Database.BeginTransaction();
-            
-            if (!context.Hospitals.Any())
+
+            if (!context.Schools.Any())
             {
-                context.Hospitals.AddRange(new[]
+                context.Schools.AddRange(new[]
                 {
-                    new Hospital
+                    new School
+                {
+                    Name = "Primary School No.42",
+                    Address = "Aksay-2 microregion, building 33",
+                    Manager = new Manager
                     {
-                        Name = "Калкаман",
-                        Address = "проспект Аль Фараби 35",
-                        Doctors = new[]
-                        {
-                            new Doctor
-                            {
-                                UserName = "Isa.Ahunbaev",
-                                LastName = "Ahunbaev",
-                                FirstName = "Isa",
-                                CabinetNumber = 34,
-                                Receptions = new[]
-                                {
-                                    new Reception
-                                    {
-                                        DateTime = new DateTime(2022, 3, 4, 12, 0, 0),
-                                        Patient = new Patient
-                                        {
-                                            LastName = "Aidarkulov",
-                                            FirstName = "Nursultan",
-                                            UserName = "Nursultan.Aidarkulov"
-                                        }
-                                    },
-                                    new Reception
-                                    {
-                                        DateTime = new DateTime(2022, 3, 5, 15, 0, 0),
-                                        Patient = new Patient
-                                        {
-                                            LastName = "Petrov",
-                                            FirstName = "Vasilii",
-                                            UserName = "Vasilii.Petrov"
-                                        }
-                                    }
-                                }
-                            },
-                            new Doctor
-                            {
-                                UserName = "Alymkadyr.Beishenaliev",
-                                LastName = "Alymkadyr",
-                                FirstName = "Beishenaliev",
-                                CabinetNumber = 25,
-                                Receptions = new[]
-                                {
-                                    new Reception
-                                    {
-                                        DateTime = new DateTime(2022, 3, 4, 11, 0, 0),
-                                        Patient = new Patient
-                                        {
-                                            LastName = "Ivanov",
-                                            FirstName = "Petr",
-                                            UserName = "Petr.Ivanov"
-                                        }
-                                    }
-                                }
-                            }
-                        }
+                        UserName = "marat.maratov",
+                        FirstName = "Marat",
+                        LastName = "Maratov"
                     },
-                    new Hospital
+                    Students = new[]
                     {
-                        Name = "Центр семейной медецины",
-                        Address = "ул. Центральная 345",
-                        Doctors = new[]
+                        new Student
                         {
-                            new Doctor
-                            {
-                                UserName = "Sabyrbek.Jumabekov",
-                                LastName = "Сабырбек",
-                                FirstName = "Джумабеков",
-                                CabinetNumber = 1,
-                                Receptions = new[]
-                                {
-                                    new Reception
-                                    {
-                                        DateTime = new DateTime(2022, 3, 5, 12, 0, 0),
-                                        Patient = new Patient
-                                        {
-                                            LastName = "Alex",
-                                            FirstName = "Ivan",
-                                            UserName = "Ivan.Alex"
-                                        }
-                                    }
-                                }
-                            }
+                        UserName = "zhanar.aidanova",
+                        LastName = "Aidanova",
+                        FirstName = "Zhanar",
+                        },
+                        new Student
+                        {
+                            UserName = "kanat.sharipov",
+                            LastName = "Sharipov",
+                            FirstName = "Kanat",
+                        },
+                        new Student
+                        {
+                            UserName = "zhanat.makashev",
+                            LastName = "Makashev",
+                            FirstName = "Zhanat",
+                        },
+                        new Student
+                        {
+                            UserName = "marat.aidanov",
+                            LastName = "Aidanov",
+                            FirstName = "Marat",
+                        },
+                        new Student
+                        {
+                            UserName = "semyon.ivanov",
+                            LastName = "Ivanov",
+                            FirstName = "Semyon",
+                        },
+                        new Student
+                        {
+                            UserName = "anna.vassilieva",
+                            LastName = "Vassilieva",
+                            FirstName = "Anna",
                         }
                     }
+                },
+                    new School
+                {
+                    Name = "Primary School No.72",
+                    Address = "16 Suleimenova St.",
+                    Manager = new Manager
+                    {
+                        UserName = "alexandr.ivanov",
+                        FirstName = "Alexandr",
+                        LastName = "Ivanov"
+                    },
+                    Students = new[]
+                    {
+                        new Student
+                        {
+                            UserName = "zhanar.narova",
+                            LastName = "Narova",
+                            FirstName = "Zhanar",
+                        },
+                        new Student
+                        {
+                            UserName = "kanat.sharipov",
+                            LastName = "Sharipov",
+                            FirstName = "Kanat",
+                        },
+                        new Student
+                        {
+                            UserName = "aidyn.zharov",
+                            LastName = "Zharov",
+                            FirstName = "Aidyn",
+                        },
+                        new Student
+                        {
+                            UserName = "marat.ivanov",
+                            LastName = "Ivanov",
+                            FirstName = "Marat",
+                        },
+                        new Student
+                        {
+                            UserName = "semyon.sidorov",
+                            LastName = "Sidorov",
+                            FirstName = "Semyon",
+                        },
+                        new Student
+                        {
+                            UserName = "anna.moroz",
+                            LastName = "Moroz",
+                            FirstName = "Anna",
+                        }
+                    }
+                },
+                    new School
+                {
+                    Name = "Gymnasium school No.86",
+                    Address = "6 microregion, building 63",
+                    Manager = new Manager
+                    {
+                        UserName = "zhamilya.edilova",
+                        FirstName = "Zhamilya",
+                        LastName = "Edilova"
+                    },
+                    Students = new[]
+                    {
+                        new Student
+                        {
+                            UserName = "aliya.kanat",
+                            LastName = "Kanat",
+                            FirstName = "Aliya",
+                        },
+                        new Student
+                        {
+                            UserName = "askhat.mamyr",
+                            LastName = "Mamyr",
+                            FirstName = "Askhat",
+                        },
+                        new Student
+                        {
+                            UserName = "aidyn.zhaparov",
+                            LastName = "Zhaparov",
+                            FirstName = "Aidyn",
+                        },
+                        new Student
+                        {
+                            UserName = "eugeniy.ivanov",
+                            LastName = "Ivanov",
+                            FirstName = "Eugeniy",
+                        },
+                        new Student
+                        {
+                            UserName = "ivan.mrych",
+                            LastName = "Mrych",
+                            FirstName = "Ivan",
+                        },
+                        new Student
+                        {
+                            UserName = "anna.karenina",
+                            LastName = "Karenina",
+                            FirstName = "Anna",
+                        }
+                    }
+                }
                 });
 
                 context.SaveChanges();
