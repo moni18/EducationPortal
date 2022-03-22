@@ -1,7 +1,7 @@
 ﻿using System.Security.Claims;
 using System.Threading.Tasks;
-using BusinessLogic.Base;
-using Data.Models.Hospital;
+using BusinessLogic.Services.Hospital.Base;
+using Data.Entities.Models.Hospital;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

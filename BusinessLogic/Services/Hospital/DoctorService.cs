@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
-using BusinessLogic.Base;
-using Data.Models.Hospital;
+using BusinessLogic.Services.Hospital.Base;
+using Data.Entities.Models.Hospital;
 using DataAccessLayer.Contexts;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,7 +19,7 @@ namespace BusinessLogic.Services.Hospital
 
         public async Task<IEnumerable<DoctorViewModel>> FetchAsync()
         {
-            return Mapper.Map<IEnumerable<DoctorViewModel>>(await _dbContext.Doctors.Include(x => x.Hospital).ToListAsync());
+            return Mapper.Map<IEnumerable<DoctorViewModel>>(await _dbContext.Doctors.Include(x => x.User).ToListAsync());
         }
     }
 }

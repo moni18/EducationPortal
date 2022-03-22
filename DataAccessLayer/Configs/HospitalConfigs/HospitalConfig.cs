@@ -1,4 +1,4 @@
-﻿using Data.Domain.Hospital;
+﻿using Data.Entities.Domain.Hospital;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

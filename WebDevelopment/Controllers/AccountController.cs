@@ -1,9 +1,12 @@
 ﻿using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using Data.Domain;
-using Data.Domain.Hospital;
-using Data.Models;
+using BusinessLogic.Services.Hospital.Base;
+using Data.Entities.Domain.Hospital;
+using Data.Entities.Domain.Identity;
+using Data.Entities.Enums;
+using Data.Entities.Models.Hospital;
+using Data.Entities.Models.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 
@@ -11,22 +14,30 @@ namespace WebDevelopment.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly RoleManager<HospitalRole> _roleManager;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly RoleManager<ApplicationRole> _roleManager;
+        private readonly IHospitalService _hospitalService;
 
-        public AccountController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, RoleManager<HospitalRole> roleManager)
+        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager,
+            RoleManager<ApplicationRole> roleManager, IHospitalService hospitalService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
+            _hospitalService = hospitalService;
         }
 
-        public IActionResult Register()
+        [HttpGet]
+        public async Task<IActionResult> Register()
         {
             return View(new RegisterViewModel
             {
-                Roles = _roleManager.Roles.Where(x => x.IsRegister)
+                Roles = _roleManager.Roles.Where(x => x.IsRegister).ToList(),
+                Doctor = new DoctorRegisterViewModel
+                {
+                    Hospitals = (await _hospitalService.FetchAsync()).ToList()
+                }
             });
         }
 
@@ -35,21 +46,30 @@ namespace WebDevelopment.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new IdentityUser
+                var user = new ApplicationUser
                 {
                     UserName = model.Email,
-                    Email = model.Email
+                    Email = model.Email,
+                    FirstName = model.FirstName,
+                    LastName = model.LastName,
+                    Patient = model.RoleName == RolesEnum.Patient.ToString() ? new Patient() : null,
+                    Doctor = model.RoleName == RolesEnum.Doctor.ToString() ? new Doctor
+                    {
+                        Specialization = model.Doctor.Specialization ?? "",
+                        HospitalId = model.Doctor.SelectedHospitalId,
+                        CabinetNumber = model.Doctor.CabinetNumber
+                    } : null,
                 };
 
                 var result = await _userManager.CreateAsync(user, model.Password);
 
                 if (result.Succeeded)
                 {
-                    await _signInManager.SignInAsync(user, isPersistent: false);
-
                     await _userManager.AddToRoleAsync(user, model.RoleName);
 
-                    return RedirectToAction("index", "Home");
+                    await _signInManager.SignInAsync(user, isPersistent: false);
+
+                    return RedirectToAction("Index", "Home");
                 }
 
                 foreach (var error in result.Errors)
@@ -89,6 +109,7 @@ namespace WebDevelopment.Controllers
             return View(user);
         }
 
+        [Authorize]
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();

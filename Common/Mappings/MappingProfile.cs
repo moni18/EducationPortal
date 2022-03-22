@@ -9,7 +9,7 @@ namespace Common.Mappings
     {
         public MappingProfile()
         {
-            ApplyMappingsFromAssembly(Assembly.Load("Data"));
+            ApplyMappingsFromAssembly(Assembly.Load("Data.Entities"));
         }
 
         private void ApplyMappingsFromAssembly(Assembly assembly)

@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
-using BusinessLogic.Base;
-using Data.Domain.Hospital;
-using Data.Models.Hospital;
+using BusinessLogic.Services.Hospital.Base;
+using Data.Entities.Domain.Hospital;
+using Data.Entities.Models.Hospital;
 using DataAccessLayer.Contexts;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,8 +21,8 @@ namespace BusinessLogic.Services.Hospital
         public async Task<IEnumerable<ReceptionViewModel>> FetchAsync()
         {
             var items = await _dbContext.Receptions
-                .Include(x => x.Patient)
-                .Include(x => x.Doctor).ToListAsync();
+                .Include(x => x.Patient).ThenInclude(y => y.User)
+                .Include(x => x.Doctor).ThenInclude(y => y.User).ToListAsync();
 
             return Mapper.Map<IEnumerable<ReceptionViewModel>>(items);
         }
@@ -30,8 +30,8 @@ namespace BusinessLogic.Services.Hospital
         public async Task<ReceptionViewModel> FetchAsync(int id)
         {
             var reception = await _dbContext.Receptions
-                .Include(x => x.Patient)
-                .Include(x => x.Doctor).SingleOrDefaultAsync(x => x.Id == id);
+                .Include(x => x.Patient).ThenInclude(y => y.User)
+                .Include(x => x.Doctor).ThenInclude(y => y.User).SingleOrDefaultAsync(x => x.Id == id);
             
             //TODO check for null
 

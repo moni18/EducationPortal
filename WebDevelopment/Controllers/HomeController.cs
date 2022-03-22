@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
-using Data.Models;
+using Data.Entities.Models;
 using Microsoft.AspNetCore.Authorization;
 
 namespace WebDevelopment.Controllers

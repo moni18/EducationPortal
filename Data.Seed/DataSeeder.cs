@@ -2,10 +2,10 @@
 using System.Linq;
 using Common.Attributes;
 using Common.Extensions;
-using Data.Domain.Hospital;
-using Data.Enums;
+using Data.Entities.Domain.Hospital;
+using Data.Entities.Domain.Identity;
+using Data.Entities.Enums;
 using DataAccessLayer.Contexts;
-using Microsoft.AspNetCore.Identity;
 
 namespace Data.Seed
 {
@@ -19,7 +19,7 @@ namespace Data.Seed
             {
                 foreach (RolesEnum role in (RolesEnum[])Enum.GetValues(typeof(RolesEnum)))
                 {
-                    context.Roles.Add(new HospitalRole
+                    context.Roles.Add(new ApplicationRole
                     {
                         Name = role.ToString(),
                         NormalizedName = role.ToString().ToUpper(),
@@ -31,6 +31,35 @@ namespace Data.Seed
             }
 
             if (!context.Hospitals.Any())
+            {
+                context.Hospitals.AddRange(new[]
+                {
+                    new Hospital
+                    {
+                        Name = "Калкаман",
+                        Address = "проспект Аль Фараби 35"
+                    },
+                    new Hospital
+                    {
+                        Name = "Центр семейной медецины",
+                        Address = "ул. Центральная 345"
+                    },
+                    new Hospital
+                    {
+                        Name = "Институт кардиологии",
+                        Address = "ул. Набережная 5"
+                    },
+                    new Hospital
+                    {
+                        Name = "Пункт травмотологии",
+                        Address = "ул. Койбагарова 32"
+                    }
+                });
+
+                context.SaveChanges();
+            }
+
+            /*if (!context.Hospitals.Any())
             {
                 context.Hospitals.AddRange(new[]
                 {
@@ -51,24 +80,20 @@ namespace Data.Seed
                                     new Reception
                                     {
                                         DateTime = new DateTime(2022, 3, 4, 12, 0, 0),
-                                        /*Patient = new IdentityUser
+                                        Patient = new ApplicationUser
                                         {
                                             LastName = "Aidarkulov",
                                             FirstName = "Nursultan",
-                                            UserName = "Nursultan.Aidarkulov"
-                                        }*/
-                                        Patient = new IdentityUser("Nursultan.Aidarkulov")
+                                        }
                                     },
                                     new Reception
                                     {
                                         DateTime = new DateTime(2022, 3, 5, 15, 0, 0),
-                                        /*Patient = new Patient
+                                        Patient = new ApplicationUser
                                         {
                                             LastName = "Petrov",
                                             FirstName = "Vasilii",
-                                            UserName = "Vasilii.Petrov"
-                                        }*/
-                                        Patient = new IdentityUser("Vasilii.Petrov")
+                                        }
                                     }
                                 }
                             },
@@ -83,13 +108,11 @@ namespace Data.Seed
                                     new Reception
                                     {
                                         DateTime = new DateTime(2022, 3, 4, 11, 0, 0),
-                                        /*Patient = new Patient
+                                        Patient = new Patient
                                         {
                                             LastName = "Ivanov",
                                             FirstName = "Petr",
-                                            UserName = "Petr.Ivanov"
-                                        }*/
-                                        Patient = new IdentityUser("Petr.Ivanov")
+                                        }
                                     }
                                 }
                             }
@@ -112,13 +135,11 @@ namespace Data.Seed
                                     new Reception
                                     {
                                         DateTime = new DateTime(2022, 3, 5, 12, 0, 0),
-                                        /*Patient = new Patient
+                                        Patient = new ApplicationUser
                                         {
                                             LastName = "Alex",
                                             FirstName = "Ivan",
-                                            UserName = "Ivan.Alex"
-                                        }*/
-                                        Patient = new IdentityUser("Ivan.Alex")
+                                        }
                                     }
                                 }
                             }
@@ -127,7 +148,7 @@ namespace Data.Seed
                 });
 
                 context.SaveChanges();
-            }
+            }*/
 
             tran.Commit();
         }

@@ -1,4 +1,4 @@
-﻿using Data.Domain.Hospital;
+﻿using Data.Entities.Domain.Hospital;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -18,7 +18,12 @@ namespace DataAccessLayer.Configs.HospitalConfigs
             builder.HasOne(x => x.Doctor)
                 .WithMany(x => x.Receptions)
                 .HasForeignKey(x => x.DoctorId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.NoAction);
+
+            builder.HasOne(x => x.Patient)
+                .WithMany(x => x.Receptions)
+                .HasForeignKey(x => x.PatientId)
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }
