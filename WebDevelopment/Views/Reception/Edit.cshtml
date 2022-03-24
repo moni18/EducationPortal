@@ -19,7 +19,7 @@
 
             <div class="form-group">
                 <label asp-for="DateTime" class="control-label"></label>
-                <input asp-for="DateTime" class="form-control" readonly=@User.IsInRole(RolesEnum.Doctor.ToString()) />
+                <input asp-for="DateTime" class="form-control" min="@DateTime.Now" readonly=@User.IsInRole(RolesEnum.Doctor.ToString()) />
                 <span asp-validation-for="DateTime" class="text-danger"></span>
             </div>
 
