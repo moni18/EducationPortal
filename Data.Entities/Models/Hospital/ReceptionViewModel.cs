@@ -26,12 +26,17 @@ namespace Data.Entities.Models.Hospital
         public string DoctorName { get; set; }
         public string PatientName { get; set; }
 
+        public string Complaint { get; set; }
+        public string Treatment { get; set; }
+        public bool IsCompleted { get; set; }
+
         void IMapFrom<Reception>.Mapping(Profile profile)
         {
             profile.CreateMap<Reception, ReceptionViewModel>()
                 .ForMember(x => x.DoctorName, opts => opts.MapFrom(y => $"{y.Doctor.User.LastName} {y.Doctor.User.FirstName}"))
                 .ForMember(x => x.PatientName, opts => opts.MapFrom(y => $"{y.Patient.User.LastName} {y.Patient.User.FirstName}"))
-                .ForMember(x => x.CabinetNumber, opts => opts.MapFrom(y => y.Doctor.CabinetNumber));
+                .ForMember(x => x.CabinetNumber, opts => opts.MapFrom(y => y.Doctor.CabinetNumber))
+                .ReverseMap();
         }
     }
 }

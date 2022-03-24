@@ -1,4 +1,5 @@
-﻿@model Data.Entities.Models.Hospital.ReceptionViewModel
+﻿@using Data.Entities.Enums
+@model Data.Entities.Models.Hospital.ReceptionViewModel
 
 @{
     ViewData["Title"] = "Edit";
@@ -15,11 +16,22 @@
             @Html.HiddenFor(model => model.Id)
             @Html.HiddenFor(model => model.DoctorId)
             @Html.HiddenFor(model => model.PatientId)
+
             <div class="form-group">
                 <label asp-for="DateTime" class="control-label"></label>
-                <input asp-for="DateTime" class="form-control" />
+                <input asp-for="DateTime" class="form-control" readonly=@User.IsInRole(RolesEnum.Doctor.ToString()) />
                 <span asp-validation-for="DateTime" class="text-danger"></span>
             </div>
+
+            <div class="form-group">
+                <label asp-for="Complaint" class="control-label"></label>
+                <textarea asp-for="Complaint" class="form-control" readonly=@User.IsInRole(RolesEnum.Patient.ToString())></textarea>
+            </div>
+            <div class="form-group">
+                <label asp-for="Treatment" class="control-label"></label>
+                <textarea asp-for="Treatment" class="form-control" readonly=@User.IsInRole(RolesEnum.Patient.ToString())></textarea>
+            </div>
+
             <div class="form-group">
                 <label asp-for="DoctorName" class="control-label"></label>
                 <input asp-for="DoctorName" class="form-control" readonly="readonly" />
@@ -32,6 +44,13 @@
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
+        @if (User.IsInRole(RolesEnum.Doctor.ToString()))
+        {
+            @using (Html.BeginForm("Close", "Reception", new {id = Model.Id}, FormMethod.Post))
+            {
+                <input type="submit" value="Close" class="btn btn-primary" />
+            }
+        }
     </div>
 </div>
 

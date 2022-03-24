@@ -21,7 +21,7 @@ namespace WebDevelopment.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var items = await _receptionService.FetchAsync();
+            var items = await _receptionService.FetchAsync(User.FindFirstValue(ClaimTypes.NameIdentifier));
             return View("List", items);
         }
 
@@ -62,7 +62,7 @@ namespace WebDevelopment.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Patient")]
+        [Authorize(Roles = "Patient, Doctor")]
         public async Task<IActionResult> Edit(int id)
         {
             var item = await _receptionService.FetchAsync(id);
@@ -70,10 +70,18 @@ namespace WebDevelopment.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Patient")]
+        [Authorize(Roles = "Patient, Doctor")]
         public async Task<IActionResult> Edit(ReceptionViewModel reception)
         {
             await _receptionService.UpdateAsync(reception);
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Doctor")]
+        public async Task<IActionResult> Close(int id)
+        {
+            await _receptionService.CloseAsync(id);
             return RedirectToAction("Index");
         }
     }
