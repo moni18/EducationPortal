@@ -1,10 +1,11 @@
 ﻿using System.Reflection;
 using Data.Domain.Education;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccessLayer.Contexts
 {
-    public class EducationDbContext : DbContext
+    public class EducationDbContext : IdentityDbContext
     {
         public DbSet<School> Schools { get; set; }
         public DbSet<Manager> Managers { get; set; }

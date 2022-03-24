@@ -9,7 +9,8 @@ namespace BusinessLogic.Extensions
         public static IServiceCollection RegisterServices(this IServiceCollection services)
         {
             services.AddScoped<ISchoolService, SchoolService>();
-
+            services.AddScoped<IManagerService, ManagerService>();
+            services.AddScoped<IStudentService, StudentService>();
             return services;
         }
     }

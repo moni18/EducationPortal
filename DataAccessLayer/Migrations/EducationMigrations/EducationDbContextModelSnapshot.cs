@@ -57,10 +57,6 @@ namespace DataAccessLayer.Migrations.EducationMigrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("ManagerId")
                         .HasColumnType("int");
 
@@ -74,8 +70,6 @@ namespace DataAccessLayer.Migrations.EducationMigrations
                     b.HasIndex("ManagerId");
 
                     b.ToTable("Schools");
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("School");
                 });
 
             modelBuilder.Entity("Data.Domain.Education.Student", b =>
@@ -108,13 +102,6 @@ namespace DataAccessLayer.Migrations.EducationMigrations
                     b.HasIndex("SchoolId");
 
                     b.ToTable("Students");
-                });
-
-            modelBuilder.Entity("Data.Domain.Education.University", b =>
-                {
-                    b.HasBaseType("Data.Domain.Education.School");
-
-                    b.HasDiscriminator().HasValue("University");
                 });
 
             modelBuilder.Entity("Data.Domain.Education.School", b =>

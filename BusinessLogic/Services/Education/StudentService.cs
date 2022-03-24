@@ -1,0 +1,30 @@
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using BusinessLogic.Base;
+using Data.Models.Education;
+using DataAccessLayer.Contexts;
+using Microsoft.EntityFrameworkCore;
+
+
+namespace BusinessLogic.Services.Education
+{
+    public class StudentService : IStudentService
+    {
+        private readonly EducationDbContext _dbContext;
+        public StudentService(EducationDbContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
+        public async Task<IEnumerable<StudentViewModel>> FetchAsync()
+        {
+            return await _dbContext.Students.Select(x => new StudentViewModel
+            {
+                Id = x.Id,
+                Name = $"{x.FirstName} {x.LastName}",
+                School = x.School.Name
+            }).ToListAsync();
+        }
+
+    }
+}

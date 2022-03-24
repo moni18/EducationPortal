@@ -8,6 +8,6 @@ namespace Data.Domain.Education
 {
     public class Manager : User
     {
-        //public ICollection<School> Schools { get; set; }
+        public ICollection<School> Schools { get; set; }
     }
 }

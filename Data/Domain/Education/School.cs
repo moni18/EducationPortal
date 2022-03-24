@@ -13,7 +13,7 @@ namespace Data.Domain.Education
         public string Address { get; set; }
         public int ManagerId { get; set; }
         public Manager Manager { get; set; }
-        public ICollection<Student> Students { get; set; }
+        public IEnumerable<Student> Students { get; set; }
 
     }
 }
