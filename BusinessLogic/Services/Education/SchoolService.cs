@@ -45,6 +45,27 @@ namespace BusinessLogic.Services.Education
             };
         }
 
+        public async Task DeleteAsync(int id)
+        {
+            var school = await _dbContext.Schools
+                .SingleOrDefaultAsync(x => x.Id == id);
+            _dbContext.Schools.Remove(school);
+            await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task UpdateAsync(SchoolViewModel school)
+        {
+            var item = await _dbContext.Schools
+                .SingleOrDefaultAsync(x => x.Id == school.Id);
+            item.Name = school.Name;
+            item.Address = school.Address;
+            
+
+            _dbContext.Schools.Update(item);
+            await _dbContext.SaveChangesAsync();
+
+        }
+
         public async Task CreateAsync(SchoolViewModel school)
         {
             await _dbContext.Schools.AddAsync(new School

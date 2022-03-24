@@ -43,5 +43,23 @@ namespace WebDevelopment.Controllers
             return View("Details", item);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
+        {
+            await _schoolService.DeleteAsync(id);
+            return RedirectToAction("Index");
+        }
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            var item = await _schoolService.FetchAsync(id);
+            return View("Edit", item);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Edit(SchoolViewModel school)
+        {
+            //await _schoolService.UpdateAsync(school);
+            return RedirectToAction("Index");
+        }
     }
 }

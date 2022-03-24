@@ -10,6 +10,8 @@ namespace BusinessLogic.Base
     {
         Task<IEnumerable<SchoolViewModel>> FetchAsync();
         Task<SchoolViewModel> FetchAsync(int id);
+        Task DeleteAsync(int id);
+        Task UpdateAsync(SchoolViewModel school);
         Task CreateAsync(SchoolViewModel school);
     }
 }
