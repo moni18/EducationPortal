@@ -5,12 +5,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DataAccessLayer\DataAccessLayer.csproj" />
-    <ProjectReference Include="..\Data\Data.csproj" />
+    <Compile Remove="Services\Sport\**" />
+    <EmbeddedResource Remove="Services\Sport\**" />
+    <None Remove="Services\Sport\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Services\Sport\" />
+    <ProjectReference Include="..\DataAccessLayer\DataAccessLayer.csproj" />
+    <ProjectReference Include="..\Data\Data.csproj" />
   </ItemGroup>
 
 </Project>

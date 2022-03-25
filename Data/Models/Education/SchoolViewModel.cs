@@ -1,12 +1,13 @@
-﻿using System;
+﻿using AutoMapper;
+using Common.Mappings;
+using Data.Domain.Education;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace Data.Models.Education
 {
-    public class SchoolViewModel
+    public class SchoolViewModel : IMapFrom<School>, IMapTo<School>
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -16,5 +17,12 @@ namespace Data.Models.Education
         public IEnumerable<StudentViewModel> StudentList { get; set; }
         public IEnumerable<ManagerViewModel> ManagerList { get; set; }
         public int StudentsNumber { get; set; }
+
+        void IMapFrom<School>.Mapping(Profile profile)
+        {
+            profile.CreateMap<School, SchoolViewModel>()
+                .ForMember(x => x.ManagerName, opts => opts.MapFrom(y => $"{y.Manager.LastName} {y.Manager.FirstName}"))
+                .ForMember(x => x.StudentsNumber, opts => opts.MapFrom(y => $"{y.Students.Count()}"));
+        }
     }
 }

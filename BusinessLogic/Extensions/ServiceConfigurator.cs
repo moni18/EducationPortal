@@ -1,5 +1,6 @@
 ﻿using BusinessLogic.Base;
 using BusinessLogic.Services.Education;
+using Common.Mappings;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace BusinessLogic.Extensions
@@ -11,6 +12,8 @@ namespace BusinessLogic.Extensions
             services.AddScoped<ISchoolService, SchoolService>();
             services.AddScoped<IManagerService, ManagerService>();
             services.AddScoped<IStudentService, StudentService>();
+
+            services.AddAutoMapper(typeof(MappingProfile).Assembly);
             return services;
         }
     }

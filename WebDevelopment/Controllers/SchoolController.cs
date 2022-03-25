@@ -58,7 +58,7 @@ namespace WebDevelopment.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(SchoolViewModel school)
         {
-            //await _schoolService.UpdateAsync(school);
+            await _schoolService.UpdateAsync(school);
             return RedirectToAction("Index");
         }
     }
