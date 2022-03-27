@@ -19,8 +19,10 @@ namespace BusinessLogic.Services.Education
         }
         public async Task<IEnumerable<StudentViewModel>> FetchAsync()
         {
-            return Mapper.Map<IEnumerable<StudentViewModel>>(await _dbContext.Students.Include(x=>x.School).ToListAsync());
+            return Mapper.Map<IEnumerable<StudentViewModel>>(await _dbContext.Students
+                .Include(x => x.School).ToListAsync());
         }
 
     }
+   
 }

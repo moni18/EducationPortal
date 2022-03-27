@@ -4,14 +4,16 @@ using DataAccessLayer.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace DataAccessLayer.Migrations.EducationDbMigrations
+namespace DataAccessLayer.Migrations
 {
     [DbContext(typeof(EducationDbContext))]
-    partial class EducationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220327150714_UniversitiesAdded")]
+    partial class UniversitiesAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -27,13 +29,19 @@ namespace DataAccessLayer.Migrations.EducationDbMigrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("FirstName")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("LastName")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("UserName")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
@@ -48,10 +56,70 @@ namespace DataAccessLayer.Migrations.EducationDbMigrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Address")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Discriminator")
                         .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("ManagerId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ManagerId");
+
+                    b.ToTable("Schools");
+                });
+
+            modelBuilder.Entity("Data.Domain.Education.Student", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int?>("SchoolId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("UniversityId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SchoolId");
+
+                    b.HasIndex("UniversityId");
+
+                    b.ToTable("Students");
+                });
+
+            modelBuilder.Entity("Data.Domain.Education.University", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ManagerId")
@@ -64,35 +132,7 @@ namespace DataAccessLayer.Migrations.EducationDbMigrations
 
                     b.HasIndex("ManagerId");
 
-                    b.ToTable("Schools");
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("School");
-                });
-
-            modelBuilder.Entity("Data.Domain.Education.Student", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("FirstName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LastName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("SchoolId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("SchoolId");
-
-                    b.ToTable("Students");
+                    b.ToTable("Universities");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -291,13 +331,6 @@ namespace DataAccessLayer.Migrations.EducationDbMigrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("Data.Domain.Education.University", b =>
-                {
-                    b.HasBaseType("Data.Domain.Education.School");
-
-                    b.HasDiscriminator().HasValue("University");
-                });
-
             modelBuilder.Entity("Data.Domain.Education.School", b =>
                 {
                     b.HasOne("Data.Domain.Education.Manager", "Manager")
@@ -314,10 +347,26 @@ namespace DataAccessLayer.Migrations.EducationDbMigrations
                     b.HasOne("Data.Domain.Education.School", "School")
                         .WithMany("Students")
                         .HasForeignKey("SchoolId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Data.Domain.Education.University", "University")
+                        .WithMany("Students")
+                        .HasForeignKey("UniversityId");
+
+                    b.Navigation("School");
+
+                    b.Navigation("University");
+                });
+
+            modelBuilder.Entity("Data.Domain.Education.University", b =>
+                {
+                    b.HasOne("Data.Domain.Education.Manager", "Manager")
+                        .WithMany()
+                        .HasForeignKey("ManagerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("School");
+                    b.Navigation("Manager");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -377,6 +426,11 @@ namespace DataAccessLayer.Migrations.EducationDbMigrations
                 });
 
             modelBuilder.Entity("Data.Domain.Education.School", b =>
+                {
+                    b.Navigation("Students");
+                });
+
+            modelBuilder.Entity("Data.Domain.Education.University", b =>
                 {
                     b.Navigation("Students");
                 });

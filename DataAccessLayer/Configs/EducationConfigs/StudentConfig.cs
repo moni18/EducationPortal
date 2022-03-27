@@ -20,12 +20,14 @@ namespace DataAccessLayer.Configs.EducationConfigs
             builder.Property(x => x.FirstName).HasMaxLength(50).IsRequired();
             builder.Property(x => x.LastName).HasMaxLength(50).IsRequired();
             builder.Property(x => x.SchoolId);
+            builder.Property(x => x.UniversityId);
 
             builder.HasOne(x => x.School)
                 .WithMany(x => x.Students)
                 .HasForeignKey(x => x.SchoolId)
                 .OnDelete(DeleteBehavior.Cascade);
         }
+
     }
 }
     

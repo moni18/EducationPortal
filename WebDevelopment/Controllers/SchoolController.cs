@@ -10,6 +10,7 @@ namespace WebDevelopment.Controllers
         private readonly ISchoolService _schoolService;
         private readonly IStudentService _studentService;
         private readonly IManagerService _managerService;
+       
         public SchoolController(ISchoolService schoolService, IStudentService studentService, IManagerService managerService)
         {
             _schoolService = schoolService;

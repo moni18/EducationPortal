@@ -1,9 +1,9 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace DataAccessLayer.Migrations.EducationDbMigrations
+namespace DataAccessLayer.Migrations
 {
-    public partial class Initial : Migration
+    public partial class UniversitiesAdded : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -52,9 +52,9 @@ namespace DataAccessLayer.Migrations.EducationDbMigrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    UserName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -173,10 +173,9 @@ namespace DataAccessLayer.Migrations.EducationDbMigrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Address = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     ManagerId = table.Column<int>(type: "int", nullable: false),
-                    Discriminator = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -190,15 +189,37 @@ namespace DataAccessLayer.Migrations.EducationDbMigrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Universities",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ManagerId = table.Column<int>(type: "int", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Universities", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Universities_Managers_ManagerId",
+                        column: x => x.ManagerId,
+                        principalTable: "Managers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Students",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    SchoolId = table.Column<int>(type: "int", nullable: false),
-                    UserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    SchoolId = table.Column<int>(type: "int", nullable: true),
+                    UniversityId = table.Column<int>(type: "int", nullable: true),
+                    UserName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -209,6 +230,12 @@ namespace DataAccessLayer.Migrations.EducationDbMigrations
                         principalTable: "Schools",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Students_Universities_UniversityId",
+                        column: x => x.UniversityId,
+                        principalTable: "Universities",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
@@ -259,6 +286,16 @@ namespace DataAccessLayer.Migrations.EducationDbMigrations
                 name: "IX_Students_SchoolId",
                 table: "Students",
                 column: "SchoolId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Students_UniversityId",
+                table: "Students",
+                column: "UniversityId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Universities_ManagerId",
+                table: "Universities",
+                column: "ManagerId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -289,6 +326,9 @@ namespace DataAccessLayer.Migrations.EducationDbMigrations
 
             migrationBuilder.DropTable(
                 name: "Schools");
+
+            migrationBuilder.DropTable(
+                name: "Universities");
 
             migrationBuilder.DropTable(
                 name: "Managers");

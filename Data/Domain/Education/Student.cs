@@ -8,7 +8,9 @@ namespace Data.Domain.Education
 {
     public class Student : User
     {
-        public int SchoolId { get; set; }
+        public int? SchoolId { get; set; }
         public School School { get; set; }
+        public int? UniversityId { get; set; }
+        public University University { get; set; }
     }
 }
