@@ -6,12 +6,13 @@ using Data.Entities.Domain.Hospital;
 using Data.Entities.Domain.Identity;
 using Data.Entities.Enums;
 using DataAccessLayer.Contexts;
+using Microsoft.AspNetCore.Identity;
 
 namespace Data.Seed
 {
     public static class DataSeeder
     {
-        public static void Seed(HospitalDbContext context)
+        public static void Seed(HospitalDbContext context, UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager)
         {
             using var tran = context.Database.BeginTransaction();
 
@@ -28,6 +29,24 @@ namespace Data.Seed
                 }
 
                 context.SaveChanges();
+            }
+
+            if (!context.Users.Any())
+            {
+                var adminUser = new ApplicationUser
+                {
+                    Email = "admin@gmail.com",
+                    FirstName = "Admin",
+                    LastName = "Admin",
+                    UserName = "admin@gmail.com",
+                    UserRoles = new[]
+                    {
+                        new ApplicationUserRole
+                            {RoleId = context.Roles.First(x => x.Name == RolesEnum.Admin.ToString()).Id}
+                    }
+                };
+
+                userManager.CreateAsync(adminUser, "REwq$#21");
             }
 
             if (!context.Hospitals.Any())

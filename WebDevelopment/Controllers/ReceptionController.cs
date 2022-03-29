@@ -1,6 +1,8 @@
-﻿using System.Security.Claims;
+﻿using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using BusinessLogic.Services.Hospital.Base;
+using Data.Entities.Models;
 using Data.Entities.Models.Hospital;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -19,10 +21,44 @@ namespace WebDevelopment.Controllers
             _doctorService = doctorService;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? page)
         {
             var items = await _receptionService.FetchAsync(User.FindFirstValue(ClaimTypes.NameIdentifier));
-            return View("List", items);
+            return View("List", PaginatedList<ReceptionViewModel>.Create(items.ToList(), page ?? 1, 5));
+        }
+
+        public async Task<IActionResult> List(string search, string sort, string filter, int? page)
+        {
+            ViewData["CurrentSort"] = sort;
+            ViewData["DoctorNameSortParam"] = string.IsNullOrEmpty(sort) ? "doctor_name" : "doctor_name_desc";
+            ViewData["PatientNameSortParam"] = string.IsNullOrEmpty(sort) ? "patient_name_desc" : "patient_name";
+            ViewData["DateSortParam"] = sort == "date" ? "date_desc" : "date";
+
+            if (search != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                search = filter;
+            }
+
+            ViewData["CurrentFilter"] = search;
+
+            var items = await _receptionService.FetchAsync();
+            items = sort switch
+            {
+                "doctor_name_desc" => items.OrderByDescending(x => x.DoctorName),
+                "patient_name_desc" => items.OrderByDescending(x => x.PatientName),
+                "doctor_name" => items.OrderBy(x => x.DoctorName),
+                "patient_name" => items.OrderBy(x => x.PatientName),
+                "date_desc" => items.OrderByDescending(x => x.DateTime),
+                _ => items.OrderBy(x => x.DateTime),
+            };
+            if (!string.IsNullOrEmpty(search))
+                items = items.Where(x => x.PatientName.ToLower().Contains(search.ToLower()));
+            
+            return View("List", PaginatedList<ReceptionViewModel>.Create(items.ToList(), page ?? 1, 5));
         }
 
         [HttpGet]
