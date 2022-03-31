@@ -32,7 +32,13 @@ namespace WebDevelopment
                 .AddDatabase(Configuration)
                 .RegisterServices();
 
-            services.AddIdentity<ApplicationUser, ApplicationRole>()
+            services.AddIdentity<ApplicationUser, ApplicationRole>(options => {
+                    options.Password.RequireDigit = false;
+                    options.Password.RequiredLength = 6;
+                    options.Password.RequireNonAlphanumeric = false;
+                    options.Password.RequireUppercase = false;
+                    options.Password.RequireLowercase = false;
+                })
                 .AddEntityFrameworkStores<HospitalDbContext>();
         }
 
@@ -59,6 +65,8 @@ namespace WebDevelopment
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Privacy}/{id?}");
+
+                endpoints.MapControllerRoute(name: "api", pattern: "api/{controller}/{action}/{id?}");
             });
 
             string connection = Configuration.GetConnectionString("DefaultConnection");

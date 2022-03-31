@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using BusinessLogic.Services.Hospital.Base;
 using Data.Entities.Domain.Hospital;
 using Data.Entities.Models.Hospital;
 using DataAccessLayer.Contexts;
@@ -10,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BusinessLogic.Services.Hospital
 {
-    public class ReceptionService : BaseService, IReceptionService
+    public class ReceptionService : BaseService
     {
         private readonly HospitalDbContext _dbContext;
 

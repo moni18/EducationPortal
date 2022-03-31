@@ -1,5 +1,4 @@
 ﻿using BusinessLogic.Services.Hospital;
-using BusinessLogic.Services.Hospital.Base;
 using Common.Mappings;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -9,10 +8,10 @@ namespace BusinessLogic.Extensions
     {
         public static IServiceCollection RegisterServices(this IServiceCollection services)
         {
-            services.AddScoped<IReceptionService, ReceptionService>();
-            services.AddScoped<IDoctorService, DoctorService>();
-            services.AddScoped<IPatientService, PatientService>();
-            services.AddScoped<IHospitalService, HospitalService>();
+            services.AddScoped<ReceptionService>();
+            services.AddScoped<DoctorService>();
+            services.AddScoped<PatientService>();
+            services.AddScoped<HospitalService>();
             services.AddAutoMapper(typeof(MappingProfile).Assembly);
 
             return services;

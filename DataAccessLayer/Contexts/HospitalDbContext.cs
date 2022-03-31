@@ -1,5 +1,4 @@
-﻿using System.Reflection;
-using Data.Entities.Domain.Hospital;
+﻿using Data.Entities.Domain.Hospital;
 using Data.Entities.Domain.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -14,6 +13,7 @@ namespace DataAccessLayer.Contexts
         public DbSet<Doctor> Doctors { get; set; }
         public DbSet<Patient> Patients { get; set; }
         public DbSet<Hospital> Hospitals { get; set; }
+        public DbSet<DoctorSchedule> DoctorSchedules { get; set; }
 
         public HospitalDbContext(DbContextOptions<HospitalDbContext> options) : base(options)
         {
@@ -22,7 +22,7 @@ namespace DataAccessLayer.Contexts
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationUser).Assembly);
 
             modelBuilder.Entity<ApplicationUserRole>(userRole =>
             {

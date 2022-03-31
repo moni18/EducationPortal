@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using BusinessLogic.Services.Hospital.Base;
+using BusinessLogic.Services.Hospital;
 using Data.Entities.Models;
 using Data.Entities.Models.Hospital;
 using Microsoft.AspNetCore.Authorization;
@@ -12,10 +12,10 @@ namespace WebDevelopment.Controllers
     [Authorize]
     public class ReceptionController : Controller
     {
-        private readonly IReceptionService _receptionService;
-        private readonly IDoctorService _doctorService;
+        private readonly ReceptionService _receptionService;
+        private readonly DoctorService _doctorService;
 
-        public ReceptionController(IReceptionService receptionService, IDoctorService doctorService)
+        public ReceptionController(ReceptionService receptionService, DoctorService doctorService)
         {
             _receptionService = receptionService;
             _doctorService = doctorService;

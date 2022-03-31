@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using BusinessLogic.Services.Hospital.Base;
+using BusinessLogic.Services.Hospital;
 using Data.Entities.Domain.Hospital;
 using Data.Entities.Domain.Identity;
 using Data.Entities.Enums;
@@ -17,10 +17,10 @@ namespace WebDevelopment.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly RoleManager<ApplicationRole> _roleManager;
-        private readonly IHospitalService _hospitalService;
+        private readonly HospitalService _hospitalService;
 
         public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager,
-            RoleManager<ApplicationRole> roleManager, IHospitalService hospitalService)
+            RoleManager<ApplicationRole> roleManager, HospitalService hospitalService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -52,7 +52,11 @@ namespace WebDevelopment.Controllers
                     Email = model.Email,
                     FirstName = model.FirstName,
                     LastName = model.LastName,
-                    Patient = model.RoleName == RolesEnum.Patient.ToString() ? new Patient() : null,
+                    Patient = model.RoleName == RolesEnum.Patient.ToString() ? new Patient
+                    {
+                        Address = model.Patient.Address,
+                        IdentNumber = model.Patient.IdentNumber
+                    } : null,
                     Doctor = model.RoleName == RolesEnum.Doctor.ToString() ? new Doctor
                     {
                         Specialization = model.Doctor.Specialization ?? "",

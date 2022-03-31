@@ -24,9 +24,12 @@
                         </li>
                         @if (User.Identity.IsAuthenticated)
                         {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                            </li>
+                            @if (User.IsInRole(RolesEnum.Admin.ToString()) || User.IsInRole(RolesEnum.Registrator.ToString()))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Doctor" asp-action="Index">Schedule Management</a>
+                                </li>
+                            }
                             @if (User.IsInRole(RolesEnum.Admin.ToString()))
                             {
                                 <li class="nav-item">

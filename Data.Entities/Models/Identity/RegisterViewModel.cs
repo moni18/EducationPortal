@@ -23,6 +23,7 @@ namespace Data.Entities.Models.Identity
         public string RoleName { get; set; }
 
         public DoctorRegisterViewModel Doctor { get; set; }
+        public PatientRegisterViewModel Patient { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
