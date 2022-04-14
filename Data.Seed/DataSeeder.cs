@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Common.Attributes;
 using Common.Extensions;
 using Data.Entities.Domain.Hospital;
@@ -38,15 +39,15 @@ namespace Data.Seed
                     Email = "admin@gmail.com",
                     FirstName = "Admin",
                     LastName = "Admin",
-                    UserName = "admin@gmail.com",
-                    UserRoles = new[]
-                    {
-                        new ApplicationUserRole
-                            {RoleId = context.Roles.First(x => x.Name == RolesEnum.Admin.ToString()).Id}
-                    }
+                    UserName = "admin@gmail.com"
                 };
 
-                userManager.CreateAsync(adminUser, "REwq$#21");
+                IdentityResult result = userManager.CreateAsync(adminUser, "REwq$#21").Result;
+
+                if (result.Succeeded)
+                {
+                    userManager.AddToRoleAsync(adminUser, RolesEnum.Admin.ToString()).ConfigureAwait(false);
+                }
             }
 
             if (!context.Hospitals.Any())
