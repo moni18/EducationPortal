@@ -1,7 +1,6 @@
-﻿@model RegisterViewModel
-@{
-    ViewData["Title"] = "Register";
-}
+﻿@using Data.Enums
+@model Data.Models.Identity.RegisterViewModel
+@{ ViewData["Title"] = "Register"; }
 
 <h1>Register</h1>
 
@@ -9,11 +8,58 @@
     <div class="col-md-4">
         <form method="post">
             <div asp-validation-summary="All" class="text-danger"></div>
+            @for (var i = 0; i < Model.Roles.Count; i++)
+            {
+                @Html.HiddenFor(model => Model.Roles[i].Id)
+                @Html.HiddenFor(model => Model.Roles[i].Name)
+            }
+            @for (var i = 0; i < Model.Student.Universities.Count; i++)
+            {
+                @Html.HiddenFor(model => Model.Student.Universities[i].Id)
+                @Html.HiddenFor(model => Model.Student.Universities[i].Name)
+            }
+
             <div class="form-group">
                 <label asp-for="Email"></label>
                 <input asp-for="Email" class="form-control" />
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
+            <div class="form-group">
+                <label asp-for="FirstName"></label>
+                <input asp-for="FirstName" class="form-control" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="LastName"></label>
+                <input asp-for="LastName" class="form-control" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RoleName"></label>
+                <select id="drpRoleList" class="form-control" asp-for="RoleName" asp-items="@(new SelectList(Model.Roles, "Name", "Name"))">
+                    <option value="">--Select--</option>
+                </select>
+                <span asp-validation-for="RoleName" class="text-danger"></span>
+            </div>
+
+            <div id="divStudentRegister" style="display: none">
+
+                <div class="form-group">
+                    <label asp-for="@Model.Student.UniversityId"></label>
+                    <select id="drpStudentList" class="form-control" asp-for="@Model.Student.UniversityId" asp-items="@(new SelectList(Model.Student.Universities, "Id", "Name"))">
+                    </select>
+                    <span asp-validation-for="@Model.Student.UniversityName" class="text-danger"></span>
+                </div>
+            </div> @*<div id="divPupilRegister" style="display: none">
+
+                    <div class="form-group">
+                        <label asp-for="@Model.Student.UniversityId"></label>
+                        <select id="drpStudentList" class="form-control" asp-for="@Model.InstitutionType=InstitutionType.School" asp-items="@(new SelectList(Model.Student.Schools, "Id", "Name"))">
+                        </select>
+                        <span asp-validation-for="@Model.Student.SchoolName" class="text-danger"></span>
+                    </div>
+                </div>*@
 
             <div class="form-group">
                 <label asp-for="Password"></label>
@@ -31,3 +77,26 @@
 
     </div>
 </div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script type="text/javascript">
+            $(function() {
+                $('select#drpRoleList').change(function () {
+                    if ($(this).val() === "@RolesEnum.Student.ToString()")
+                    {
+                        $("#divStudentRegister").show();
+                    }
+                    @*else if ($(this).val() === "@RolesEnum.Pupil.ToString()")
+                    {
+                        $("#divPupilRegister").show();
+                    }*@
+                    else
+                    {
+                        $("#divStudentRegister").hide();
+                    }
+                });
+            });
+    </script>
+}

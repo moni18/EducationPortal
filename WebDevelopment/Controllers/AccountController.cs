@@ -1,6 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Linq;
+using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using Data.Models;
+using BusinessLogic.Services.Education;
+using Data.Domain.Education;
+using Data.Domain.Identity;
+using Data.Enums;
+using Data.Models.Education;
+using Data.Models.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 
@@ -8,33 +14,67 @@ namespace WebDevelopment.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
-
-        public AccountController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly RoleManager<ApplicationRole> _roleManager;
+        private readonly UniversityService _universityService;
+        
+        public AccountController(UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager, RoleManager<ApplicationRole> roleManager,
+            UniversityService universityService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _roleManager = roleManager;
+            _universityService = universityService;
         }
-        public IActionResult Register()
+        [HttpGet]
+        public async Task<IActionResult> Register()
         {
-            return View();
+            return View(new RegisterViewModel
+            {
+                Roles = _roleManager.Roles.Where(x => x.IsRegister).ToList(),
+
+                Student = new StudentRegisterViewModel
+                {
+                    Universities = (await _universityService.FetchAsync()).ToList(),
+                    //Schools = (await _universityService.FetchAsync()).ToList()
+                }
+             
+
+            });
         }
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
             {
-                var user = new IdentityUser
+                var user = new ApplicationUser
                 {
                     UserName = model.Email,
-                    Email = model.Email
+                    Email = model.Email,
+                    FirstName = model.FirstName,
+                    LastName = model.LastName,
+                    Manager = model.RoleName == RolesEnum.Manager.ToString() ? new Manager() : null,
+                    Student = model.RoleName == RolesEnum.Student.ToString() ? new Student
+                    {
+                        UniversityId = model.Student.UniversityId
+                        
+                    } : null    
+                    //    new Student()
+                    //{
+                    //    SchoolId = model.Student.SchoolId
+                    //}
+                    
                 };
+                
 
                 var result = await _userManager.CreateAsync(user, model.Password);
 
                 if (result.Succeeded)
                 {
+                    await _userManager.AddToRoleAsync(user, model.RoleName);
+
                     await _signInManager.SignInAsync(user, isPersistent: false);
 
                     return RedirectToAction("Index", "Home");
@@ -42,7 +82,7 @@ namespace WebDevelopment.Controllers
 
                 foreach (var error in result.Errors)
                 {
-                    ModelState.AddModelError("",error.Description);
+                    ModelState.AddModelError("", error.Description);
                 }
 
                 ModelState.AddModelError(string.Empty, "Invalid Login Attempt");

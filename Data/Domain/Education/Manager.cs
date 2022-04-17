@@ -1,13 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using Data.Domain.Identity;
+using Data.Enums;
 
 namespace Data.Domain.Education
 {
-    public class Manager : User
+    public class Manager
     {
-        public ICollection<School> Schools { get; set; }
+        public string UserId { get; set; }
+        public ApplicationUser User { get; set; }
+        public IEnumerable<University> Universities { get; set; }
+
     }
 }

@@ -9,11 +9,13 @@ namespace DataAccessLayer.Configs.EducationConfigs
         public void Configure(EntityTypeBuilder<Manager> builder)
         {
             builder.ToTable("Managers");
-            builder.HasKey(x => x.Id);
-            builder.Property(x => x.Id).ValueGeneratedOnAdd();
-            builder.Property(x => x.UserName).HasMaxLength(50).IsRequired();
-            builder.Property(x => x.FirstName).HasMaxLength(50).IsRequired();
-            builder.Property(x => x.LastName).HasMaxLength(50).IsRequired();
+            builder.HasKey(x => x.UserId);
+
+            builder.HasOne(x => x.User)
+                .WithOne(x => x.Manager)
+                .HasForeignKey<Manager>(x => x.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
         }
     }
 }

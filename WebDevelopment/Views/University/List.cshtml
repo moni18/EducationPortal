@@ -1,4 +1,6 @@
-﻿@model IEnumerable<Data.Models.Education.SchoolViewModel>
+﻿@using Data.Enums
+@using Common.Extensions
+@model IEnumerable<Data.Models.Education.UniversityViewModel>
 
 @{
     ViewData["Title"] = "List";
@@ -16,6 +18,9 @@
                 @Html.DisplayNameFor(model => model.Id)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.InstitutionType)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Name)
             </th>
             <th>
@@ -24,7 +29,8 @@
             <th>
                 @Html.DisplayNameFor(model => model.ManagerName)
             </th>
-            
+           
+
             <th></th>
         </tr>
     </thead>
@@ -35,6 +41,9 @@
                 @Html.DisplayFor(modelItem => item.Id)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.InstitutionType)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
@@ -43,11 +52,17 @@
             <td>
                 @Html.DisplayFor(modelItem => item.ManagerName)
             </td>
-            
             <td>
-                @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-                @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+                @if(User.IsInRole(RolesEnum.Registrator.ToString()))
+                {
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id })
+                }
+            </td>
+
+            <td>
+                
+                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
             </td>
         </tr>
 }

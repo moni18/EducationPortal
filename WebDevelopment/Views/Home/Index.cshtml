@@ -1,8 +1,12 @@
-﻿@{
+﻿@using Data.Enums
+@using Microsoft.AspNetCore.Mvc.Rendering
+@using Common.Extensions
+@{
     ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
-    @*<p>@Html.ActionLink("School list", "Index", "School")</p>*@
+    @*<p>@Html.ActionLink("University list", "Index", "University")</p>*@
+    @*<p>@Html.DropDownList("EnumDropDown", InstitutionType.University.ToSelectList())  </p>*@
 </div>

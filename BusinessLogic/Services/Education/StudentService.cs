@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using BusinessLogic.Base;
 using Data.Models.Education;
 using DataAccessLayer.Contexts;
 using Microsoft.EntityFrameworkCore;
@@ -10,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BusinessLogic.Services.Education
 {
-    public class StudentService : BaseService, IStudentService
+    public class StudentService : BaseService
     {
         private readonly EducationDbContext _dbContext;
         public StudentService(EducationDbContext dbContext, IMapper mapper) : base(mapper)
@@ -20,7 +19,7 @@ namespace BusinessLogic.Services.Education
         public async Task<IEnumerable<StudentViewModel>> FetchAsync()
         {
             return Mapper.Map<IEnumerable<StudentViewModel>>(await _dbContext.Students
-                .Include(x => x.School).ToListAsync());
+                .Include(x => x.University).ToListAsync());
         }
 
     }

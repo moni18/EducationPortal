@@ -1,11 +1,11 @@
 using System.Linq;
 using BusinessLogic.Extensions;
+using Data.Domain.Identity;
 using Data.Seed;
 using DataAccessLayer.Contexts;
 using DataAccessLayer.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -30,7 +30,7 @@ namespace WebDevelopment
             services
                 .AddDatabase(Configuration)
                 .RegisterServices();
-            services.AddIdentity<IdentityUser, IdentityRole>()
+            services.AddIdentity<ApplicationUser, ApplicationRole>()
                 .AddEntityFrameworkStores<EducationDbContext>();
         }
 

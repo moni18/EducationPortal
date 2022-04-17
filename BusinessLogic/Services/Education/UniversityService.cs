@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using BusinessLogic.Base;
 using Data.Domain.Education;
 using Data.Models.Education;
 using DataAccessLayer.Contexts;
@@ -11,10 +10,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BusinessLogic.Services.Education
 {
-    public class UniversityService : BaseService, IUniversityService
+    public class UniversityService : BaseService
     {
         private readonly EducationDbContext _dbContext;
-        public UniversityService(EducationDbContext dbContext, IMapper mapper) : base(mapper)
+        public UniversityService(EducationDbContext dbContext, IMapper mapper):base(mapper)
         {
             _dbContext = dbContext;
         }
@@ -22,15 +21,16 @@ namespace BusinessLogic.Services.Education
         {
             var items = await _dbContext.Universities
                 .Include(x => x.Manager)
-                .Include(x => x.Students).ToListAsync();
+                .Include(x=>x.Students).ToListAsync();
             return Mapper.Map<IEnumerable<UniversityViewModel>>(items);
+           
         }
 
         public async Task<UniversityViewModel> FetchAsync(int id)
         {
             var university = await _dbContext.Universities
                 .Include(x => x.Manager)
-                .Include(x => x.Students)
+                .Include(x=>x.Students)
                 .SingleOrDefaultAsync(x => x.Id == id);
             return Mapper.Map<UniversityViewModel>(university);
         }
@@ -49,6 +49,7 @@ namespace BusinessLogic.Services.Education
                 .SingleOrDefaultAsync(x => x.Id == university.Id);
             item.Name = university.Name;
             item.Address = university.Address;
+            item.ManagerId = university.ManagerId;
 
 
             _dbContext.Universities.Update(item);

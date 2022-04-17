@@ -1,4 +1,4 @@
-﻿@model Data.Models.Education.SchoolViewModel
+﻿@model Data.Models.Education.UniversityViewModel
 
 @{
     ViewData["Title"] = "Edit";
@@ -6,17 +6,21 @@
 
 <h1>Edit</h1>
 
-<h4>SchoolViewModel</h4>
+<h4>UniversityViewModel</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            @Html.HiddenFor(model=>model.Id)
-            
+            @Html.HiddenFor(model => model.Id)
+
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="InstitutionType" class="control-label"></label>
+                <input asp-for="InstitutionType" class="form-control" readonly="readonly" />
             </div>
             <div class="form-group">
                 <label asp-for="Address" class="control-label"></label>

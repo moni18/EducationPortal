@@ -1,12 +1,15 @@
-﻿@model Data.Models.Education.SchoolViewModel
+﻿@using Data.Enums
+@using Microsoft.AspNetCore.Mvc.Rendering
+@model Data.Models.Education.UniversityViewModel
 
 @{
     ViewData["Title"] = "Create";
+
 }
 
-<h1>Create</h1>
+<h1>Create Institution</h1>
 
-<h4>SchoolViewModel</h4>
+
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -25,14 +28,25 @@
             </div>
             <div class="form-group">
                 <select id="drpManagerList" class="form-control" asp-for="ManagerId" asp-items="@(new SelectList(Model.ManagerList, "Id", "Name"))">
-                    <option value="">--Select--</option>
+                    <option value="">--Select manager--</option>
                 </select>
             </div>
-    
-    <div class="form-group">
-        <input type="submit" value="Create" class="btn btn-primary" />
-    </div>
-</form>
+            <div asp-validation-summary="All" class="text-danger"></div>
+            
+            <div class="form-group">
+                @*@Html.DropDownListFor(m => m.InstitutionType, 
+                    new SelectList(Enum.GetValues(typeof(InstitutionType))), 
+                    "Select Institution")*@
+                <select class="form-control" id="InstitutionType" name="InstitutionType">
+                    <option>--Select Institution Type--</option> 
+                    <option>University</option> 
+                    <option>School</option> 
+                </select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
     </div>
 </div>
 
